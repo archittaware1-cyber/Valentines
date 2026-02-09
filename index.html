@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>For chotu ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #ff758c, #ff7eb3);
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+
+    /* CENTER CARD */
+    .reel {
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+      padding: 30px 20px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 22px;
+      backdrop-filter: blur(6px);
+      position: relative;
+      z-index: 10;
+    }
+
+    h1 {
+      font-size: 30px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      font-size: 20px;
+      padding: 14px 30px;
+      border-radius: 30px;
+      border: none;
+      margin: 10px;
+      cursor: pointer;
+      position: relative;
+      z-index: 20;
+    }
+
+    #yes {
+      background: white;
+      color: #ff4d6d;
+      font-weight: bold;
+    }
+
+    #no {
+      background: rgba(255,255,255,0.4);
+      color: white;
+    }
+
+    /* Floating hearts */
+    .heart {
+      position: absolute;
+      bottom: -20px;
+      font-size: 26px;
+      animation: float 6s linear infinite;
+      opacity: 0.9;
+      z-index: 0;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-110vh) scale(1.6); opacity: 0; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="reel" id="reel">
+    <h1>Will you be my Valentine? 🥹💖</h1>
+    <button id="yes" onclick="yesClick()">Yes </button>
+    <button id="no" onclick="noClick()">No </button>
+  </div>
+
+  <script>
+    /* AUDIO */
+    let yesAudio = new Audio("yes.mp4");
+    let noAudio = new Audio("no.mp4");
+
+    yesAudio.loop = true;
+    yesAudio.volume = 0; // start silent
+    noAudio.loop = false;
+
+    /* Emotional blackmail 😭 */
+    let messages = [
+      "Are you sure? 🥺",
+      "Please don’t do this to me :(",
+      "My mom already loves you 💔",
+      "I imagined our future already 😖",
+      "Okay wow I’m actually heartbroken :("
+    ];
+
+    let index = 0;
+
+    function noClick() {
+      const noBtn = document.getElementById("no");
+      const yesBtn = document.getElementById("yes");
+
+      noAudio.currentTime = 0;
+      noAudio.play();
+
+      noBtn.innerText = messages[index];
+      index = (index + 1) % messages.length;
+
+      let size = window.getComputedStyle(yesBtn).fontSize;
+      yesBtn.style.fontSize = (parseFloat(size) * 1.25) + "px";
+    }
+
+    /* Floating hearts */
+    setInterval(() => {
+      let heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerText = "💕";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 8000);
+    }, 400);
+
+    /* SMOOTH FADE-IN FUNCTION */
+    function fadeInAudio(audio, duration = 3000) {
+      let step = 0.05;
+      let intervalTime = duration / (1 / step);
+
+      let fade = setInterval(() => {
+        if (audio.volume < 1) {
+          audio.volume = Math.min(audio.volume + step, 1);
+        } else {
+          clearInterval(fade);
+        }
+      }, intervalTime);
+    }
+
+    function yesClick() {
+      noAudio.pause();
+      noAudio.currentTime = 0;
+
+      yesAudio.play();
+      fadeInAudio(yesAudio, 3000); // 👈 3-second fade in
+
+      const reel = document.getElementById("reel");
+
+      reel.innerHTML = `
+        <h1>Knew my chotu would say yes 🥰</h1>
+
+        <p style="font-size:17px; margin-top:15px; line-height:1.5;">
+          Hey baby,<br><br>
+          We’ve had a tough few weeks, and we’ll have many more good and bad days in the future,
+          but there’s no one else I’d rather be with on either of them.
+          I see my life with you, and I’d do anything to make it happen.<br><br>
+          Happy Valentine’s, my love. To many more! 💖💌
+        </p>
+
+        <div style="
+          margin-top: 22px;
+          padding: 18px;
+          background: rgba(255,255,255,0.25);
+          border-radius: 16px;
+          font-size: 18px;
+          line-height: 1.6;
+        ">
+          📅 <b>14 Feb | 7 PM</b><br>
+          <b>Saltt, Karjat</b><br>
+          🍝🍜🍛🧁🍰<br>
+          <b>(Open to suggestions)</b>
+        </div>
+      `;
+    }
+  </script>
+
+</body>
+</html>
